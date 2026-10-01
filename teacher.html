@@ -1,1 +1,107 @@
-<h1>Dashboard Guru</h1>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173b70">
+  <title>Dashboard Guru | Sistem Komputer Kelas VII</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="teacher-topbar">
+    <div class="brand">
+      <span class="brand-mark">⌘</span>
+      <div><strong>Sistem Komputer</strong><small>Dashboard Guru</small></div>
+    </div>
+    <button id="logoutBtn" class="ghost-btn hidden" type="button">Keluar</button>
+  </header>
+
+  <main class="teacher-main">
+    <section id="loginPanel" class="login-panel">
+      <div class="login-illustration">
+        <div class="monitor-art"><div class="monitor-screen">DATA<br><b>CLASS</b></div></div>
+        <div class="desk-art"></div>
+      </div>
+      <div class="login-card">
+        <span class="eyebrow">AREA GURU</span>
+        <h1>Dashboard Pembelajaran</h1>
+        <p>Masukkan kode guru untuk melihat progress siswa.</p>
+
+        <form id="loginForm">
+          <label for="teacherCode">Kode Guru</label>
+          <input id="teacherCode" type="password" autocomplete="off" required
+                 placeholder="Masukkan kode guru">
+          <button class="primary-btn" type="submit">Masuk ke Dashboard →</button>
+          <p id="loginError" class="error-message" role="alert"></p>
+        </form>
+
+        <div class="security-note">
+          <span>🔐</span>
+          <p>Kode guru diperiksa oleh Supabase. Kode tidak disimpan di halaman dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboardPanel" class="hidden">
+      <div class="page-heading">
+        <div>
+          <span class="eyebrow">MONITORING PEMBELAJARAN</span>
+          <h1>Progress Siswa</h1>
+          <p>Data pembelajaran Sistem Komputer Kelas VII.</p>
+        </div>
+        <div class="last-updated">Terakhir diperbarui <b id="lastUpdated">-</b></div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card"><span>👥</span><div><small>Total Siswa</small><strong id="totalStudents">0</strong></div></article>
+        <article class="stat-card"><span>🚀</span><div><small>Siswa Aktif</small><strong id="activeStudents">0</strong></div></article>
+        <article class="stat-card"><span>✓</span><div><small>Misi Selesai</small><strong id="completedMissions">0</strong></div></article>
+        <article class="stat-card"><span>🏆</span><div><small>Rata-rata Skor</small><strong id="averageScore">0</strong></div></article>
+      </div>
+
+      <div class="toolbar">
+        <div>
+          <label for="searchInput">Cari siswa</label>
+          <input id="searchInput" type="search" placeholder="Ketik nama siswa...">
+        </div>
+        <div>
+          <label for="classFilter">Kelas</label>
+          <select id="classFilter"><option value="">Semua kelas</option></select>
+        </div>
+        <div class="toolbar-actions">
+          <button id="refreshBtn" class="secondary-btn" type="button">↻ Muat Ulang</button>
+          <button id="exportBtn" class="secondary-btn" type="button">↓ Export CSV</button>
+        </div>
+      </div>
+
+      <div id="statusMessage" class="status-message hidden"></div>
+
+      <div class="table-card">
+        <div class="table-heading">
+          <div><h2>Perjalanan Belajar</h2><p>Progress berdasarkan data Supabase.</p></div>
+          <span id="rowCount" class="row-count">0 siswa</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Siswa</th><th>Kelas</th><th>Misi 1</th><th>Misi 2</th>
+                <th>Misi 3</th><th>Misi 4</th><th>Final</th><th>Rata-rata</th>
+              </tr>
+            </thead>
+            <tbody id="progressBody"></tbody>
+          </table>
+        </div>
+        <div id="emptyState" class="empty-state hidden">
+          <div>📭</div><h3>Belum ada data yang cocok</h3>
+          <p>Coba ubah pencarian atau filter kelas.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config/supabase-config.js"></script>
+  <script type="module" src="js/teacher/dashboard.js"></script>
+</body>
+</html>
