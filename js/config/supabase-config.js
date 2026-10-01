@@ -1,3 +1,14 @@
-const SUPABASE_URL="https://nvrrvn18.github.io/inform1-sk-game/";
-const SUPABASE_ANON_KEY="sb_publishable_0CCmrBw7Aqb5-e6jiKkwSw_e_SWei_5";
-const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const SUPABASE_URL = "MASUKKAN_PROJECT_URL";
+const SUPABASE_ANON_KEY = "MASUKKAN_PUBLISHABLE_ANON_KEY";
+
+window.supabaseClient = null;
+window.supabaseConfigReady = false;
+
+if (!SUPABASE_URL.startsWith('https://') || SUPABASE_URL.includes('MASUKKAN')) {
+  console.warn('Supabase belum dikonfigurasi. Isi js/config/supabase-config.js.');
+} else if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes('MASUKKAN')) {
+  console.warn('Supabase anon/publishable key belum diisi.');
+} else {
+  window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  window.supabaseConfigReady = true;
+}

@@ -1,21 +1,94 @@
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="js/config/supabase-config.js"></script>
-
-<script src="js/app.js"></script>
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="id">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sistem Komputer Kelas VII</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>Petualangan Sistem Komputer | Kelas VII</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<h1>Petualangan Sistem Komputer</h1>
-<div id="app">Aplikasi pembelajaran siap dikembangkan.</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config/supabase-config.js"></script>
-<script src="js/app.js"></script>
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">⌘</span><span>Sistem Komputer</span></div>
+    <div class="top-actions">
+      <span id="studentBadge" class="student-badge hidden"></span>
+      <button id="soundBtn" class="icon-btn" type="button" aria-label="Suara">🔊</button>
+      <button id="logoutBtn" class="text-btn hidden" type="button">Ganti Pengguna</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="loadingView" class="screen center-screen">
+      <div class="loader-card"><div class="spinner"></div><p>Menyiapkan perjalanan belajar...</p></div>
+    </section>
+
+    <section id="welcomeView" class="screen hidden">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <span class="eyebrow">INFORMATIKA • KELAS VII</span>
+          <h1>Petualangan<br><span>Sistem Komputer</span></h1>
+          <p>Jelajahi bagaimana manusia, perangkat, program, dan data bekerja sebagai satu sistem.</p>
+          <button id="startBtn" class="primary-btn" type="button">Mulai Perjalanan →</button>
+        </div>
+        <div class="hero-illustration" aria-label="Ilustrasi komputer">
+          <div class="desk"></div><div class="monitor"><div class="screen-glow"><span>SYS</span><b>ONLINE</b></div></div><div class="cpu"></div>
+          <div class="keyboard"></div><div class="person"><div class="head"></div><div class="body"></div></div>
+          <div class="data-orb orb1">A</div><div class="data-orb orb2">01</div>
+        </div>
+      </div>
+      <div class="learning-strip">
+        <div><b>4 Misi</b><span>eksplorasi bertahap</span></div>
+        <div><b>Interaktif</b><span>tanpa banyak mengetik</span></div>
+        <div><b>Progress tersimpan</b><span>di Supabase</span></div>
+      </div>
+    </section>
+
+    <section id="profileView" class="screen narrow hidden">
+      <div class="panel profile-panel">
+        <span class="eyebrow">SEBELUM MULAI</span>
+        <h2>Siapa yang sedang belajar?</h2>
+        <p>Masukkan nama dan kelas. Tidak perlu email atau password.</p>
+        <label for="nameInput">Nama</label>
+        <input id="nameInput" maxlength="60" autocomplete="name" placeholder="Contoh: Andi">
+        <label for="classInput">Kelas</label>
+        <select id="classInput">
+          <option value="">Pilih kelas</option><option>VII A</option><option>VII B</option><option>VII C</option><option>VII D</option><option>VII E</option><option>VII F</option><option>VII G</option><option>VII H</option><option>VII I</option><option>VII J</option>
+        </select>
+        <button id="profileStartBtn" class="primary-btn full" type="button">Masuk ke Perjalanan →</button>
+        <p class="small-note">Identitas ini digunakan untuk mengaitkan progress Anda dengan akun anonim Supabase.</p>
+      </div>
+    </section>
+
+    <section id="mapView" class="screen hidden">
+      <div class="section-heading"><div><span class="eyebrow">PERJALANAN BELAJAR</span><h2 id="welcomeName">Halo!</h2><p>Ikuti misi secara berurutan untuk membuka tantangan berikutnya.</p></div><div class="progress-ring"><span id="progressPercent">0%</span><small>selesai</small></div></div>
+      <div id="missionMap" class="mission-map"></div>
+      <div class="map-tip"><span>💡</span><span>Setiap misi dimulai dari pengamatan, lalu kamu membangun pemahaman melalui interaksi.</span></div>
+    </section>
+
+    <section id="missionView" class="screen hidden">
+      <div class="mission-topbar">
+        <button id="backMapBtn" class="back-btn" type="button">← Peta</button>
+        <div class="mission-meta"><span id="missionNumber"></span><strong id="missionTitle"></strong></div>
+        <div class="score-pill">Skor <b id="missionScore">0</b></div>
+      </div>
+      <div id="conceptBar" class="concept-bar"></div>
+      <div id="missionContent" class="mission-content"></div>
+    </section>
+
+    <section id="resultView" class="screen narrow hidden">
+      <div class="result-card">
+        <div class="result-icon">🏆</div><span class="eyebrow">PERJALANAN SELESAI</span><h2 id="finalTitle">Misi Akhir Selesai!</h2>
+        <div class="big-score"><span id="finalScore">0</span><small>/ 100</small></div>
+        <p id="finalMessage"></p>
+        <div id="resultSummary" class="result-summary"></div>
+        <button id="resultMapBtn" class="primary-btn full" type="button">Kembali ke Peta</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config/supabase-config.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
