@@ -1,5 +1,5 @@
-const SUPABASE_URL = "MASUKKAN_PROJECT_URL";
-const SUPABASE_ANON_KEY = "MASUKKAN_PUBLISHABLE_ANON_KEY";
+const SUPABASE_URL = "https://nvrrvn18.github.io/inform1-sk-game/";
+const SUPABASE_ANON_KEY = "denhcuszatxqhloiqsye";
 
 window.supabaseClient = null;
 window.supabaseConfigReady = false;
