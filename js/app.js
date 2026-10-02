@@ -9,12 +9,52 @@ const state={user:null,student:null,progress:[],currentMission:null,currentScore
 const $=id=>document.getElementById(id);
 const views=['loadingView','welcomeView','profileView','mapView','missionView','resultView'];
 const FUNCTION_LABELS={input:'INPUT',process:'PROCESS',output:'OUTPUT',storage:'STORAGE'};
-const ASSET_FALLBACK_BASE='assets/images/';
 
 function show(id){views.forEach(v=>$(v).classList.toggle('hidden',v!==id));window.scrollTo({top:0,behavior:'instant'});}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function imageHtml(item,cls='asset-image'){return `<img class="${cls}" src="${item.image}" alt="${esc(item.name)}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_FALLBACK_BASE}${item.image.split('/').pop()}'">`;}
+function imageHtml(item,cls='asset-image'){return `<img class="${cls} asset-lazy" data-asset-src="${item.image}" alt="${esc(item.name)}" decoding="async">`;}
+
+let assetObserver=null;
+let assetMutationObserver=null;
+function loadAssetImage(img){
+  if(!img||img.dataset.loaded==='true')return;
+  const src=img.dataset.assetSrc;
+  if(!src)return;
+  img.dataset.loaded='true';
+  img.src=src;
+  img.addEventListener('load',()=>img.classList.add('asset-loaded'),{once:true});
+  img.addEventListener('error',()=>{img.classList.add('asset-error');img.alt=`Gambar ${img.alt||'objek'} tidak ditemukan`;},{once:true});
+}
+function observeAssets(root=document){
+  const imgs=root.querySelectorAll?.('[data-asset-src]')||[];
+  imgs.forEach(img=>assetObserver?.observe(img));
+}
+function initAssetLoader(){
+  if('IntersectionObserver' in window){
+    assetObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          loadAssetImage(entry.target);
+          assetObserver.unobserve(entry.target);
+        }
+      });
+    },{root:null,rootMargin:'240px 0px',threshold:0.01});
+  }
+  assetMutationObserver=new MutationObserver(mutations=>{
+    mutations.forEach(m=>m.addedNodes.forEach(node=>{
+      if(node.nodeType===1){
+        if(node.matches?.('[data-asset-src]')){
+          assetObserver?assetObserver.observe(node):loadAssetImage(node);
+        }
+        observeAssets(node);
+      }
+    }));
+  });
+  assetMutationObserver.observe(document.body,{childList:true,subtree:true});
+  observeAssets(document);
+}
+
 function allItems(){return [...DEVICES,...PEOPLE,...SOFTWARE];}
 function findItem(id){return allItems().find(x=>x.id===id);}
 
@@ -167,4 +207,4 @@ function renderFinal(){
 }
 function showResult(score,correct,total){$('finalScore').textContent=score;$('finalMessage').textContent=score>=80?'Kamu berhasil menghubungkan konsep sistem komputer dengan contoh nyata.':'Perjalanan selesai. Gunakan kembali misi yang masih ingin kamu pahami.';$('resultSummary').innerHTML=`<div class="summary-row"><span>Jawaban benar</span><b>${correct}/${total}</b></div><div class="summary-row"><span>Skor akhir</span><b>${score}</b></div><div class="summary-row"><span>Peserta</span><b>${esc(state.student.nama)}</b></div>`;show('resultView')}
 window.addEventListener('online',()=>{state.offline=false;toast('Koneksi kembali.')});window.addEventListener('offline',()=>{state.offline=true;toast('Koneksi terputus. Selesaikan aktivitas setelah koneksi kembali agar skor tersimpan.')});
-ensureModal();boot();
+initAssetLoader();ensureModal();boot();
